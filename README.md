@@ -31,6 +31,72 @@ We used RepeatMasker with the search engines of RMBlast, library of Repbase and 
 	# Run phyml
 	phyml -i all_conserved_gene_family.phy -b 1000 -d nt -m GTR -c 4 -a e -o tlr
 ###  Divergence time estimation
+First, we ran baseml to calculate the substitution rate.
+	
+	# Run baseml 
+	baseml
+The baseml.ctl was set as follows:
+
+      seqfile = all_conserved_gene_family.phy 
+      outfile = mlb       
+     treefile = all_conserved_gene_family.nwk  
+
+        noisy = 3   * 0,1,2,3: how much rubbish on the screen
+      verbose = 1   * 1: detailed output, 0: concise output
+      runmode = 0   * 0: user tree;  1: semi-automatic;  2: automatic
+                    * 3: StepwiseAddition; (4,5):PerturbationNNI 
+
+        model = 7   * 0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85, 5:T92, 6: TN93, 7: GTR
+        Mgene = 0   * 0:rates, 1:separate; 2:diff pi, 3:diff kapa, 4:all diff
+    fix_kappa = 0
+        kappa = 2   * initial or given kappa
+    fix_alpha = 0 
+        alpha = 0.5  * initial or given alpha, 0:infinity (constant rate)
+       Malpha = 0   * 1: different alpha's for genes, 0: one alpha
+        ncatG = 5   * # of categories in the dG, AdG, or nparK models of rates
+      fix_rho = 1  
+          rho = 0.  * initial or given rho,   0:no correlation
+        nparK = 0   * rate-class models. 1:rK, 2:rK&fK, 3:rK&MK(1/K), 4:rK&MK 
+        clock = 1   * 0: no clock, unrooted tree, 1: clock, rooted tree
+        nhomo = 1   * 0 & 1: homogeneous, 2: kappa's, 3: N1, 4: N2
+        getSE = 1   * 0: don't want them, 1: want S.E.s of estimates
+ 	RateAncestor = 0   * (1/0): rates (alpha>0) or ancestral states (alpha=0)
+    cleandata = 0  * remove sites with ambiguity data (1:yes, 0:no)?
+    
+    
+Then, we ran mcmctree to estimate the divergence time.
+	
+	# Run mcmctree [usedata = 3] to perform ML estimation of the branch lengths, g and H without the clock
+	mcmctree
+	cp out.BV in.BV
+	# Run mcmctree [usedata = 2] to perform Bayesian estimation of divergence times using the approximate likelihood method
+	mcmctree
+
+The mcmctree.ctl was set as follows:
+          
+	      seed = -1
+       seqfile = all_conserved_gene_family_4dtv.phy
+      treefile = all_conserved_gene_family.nwk
+       outfile = out_usedata2
+
+         ndata = 1
+       usedata = 2    * 0: no data; 1:seq like; 2:normal approximation
+         clock = 2    * 1: global clock; 2: independent rates; 3: correlated rates
+       RootAge = '<1'  * constraint on root age, used if no fossil for root.
+         model = 7    *  0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85, 5:T92, 6: TN93, 7: GTR
+         alpha = 0.5   * alpha for gamma rates at sites
+         ncatG = 5    * No. categories in discrete gamma
+     cleandata = 0    * remove sites with ambiguity data (1:yes, 0:no)?
+       BDparas = 1 1 0   * birth, death, sampling
+    kappa_gamma = 6 2      * gamma prior for kappa
+    alpha_gamma = 1 1      * gamma prior for alpha
+    rgene_gamma = 1 2.04     * gamma prior for rate for genes
+    sigma2_gamma = 1 10    * gamma prior for sigma^2     (for clock=2 or 3)
+        finetune = 1: 1 0.1 0.1 0.01 0.5  * times, rates, mixing, paras, RateParas
+           print = 2
+          burnin = 10000
+        sampfreq = 10
+         nsample = 20000
 
 ## Positive selection analysis
 ### PAML free-ratio model
