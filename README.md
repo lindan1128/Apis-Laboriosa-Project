@@ -1,5 +1,34 @@
 ## Quality control 
 ## Genome assembly
+	
+	# Run SOAPdenovo
+	./soapdenovo all -s config_file
+	
+The config_file was set as follows:
+	
+	# maximal read length 
+	max_rd_len=150
+	# average insert size 
+	avg_ins=350
+	# if sequence needs to be reversed
+	reverse_seq=0
+	# in which part(s) the reads are used 
+	asm_flags=3
+	# cutoff of pair number for a reliable connection (default 3) 
+	pair_num_cutoff=3
+	# minimum aligned length to contigs for a reliable read location (default 32) 
+	map_len=32
+	# fastq file for read 1 
+	q1=1_clean.rd.fq.gz
+	# fastq file for read 2
+	q2=2_clean.rd.fq.gz
+	
+## Completeness estimation
+	
+	# Run BUSCO
+	python run_BUSCO.py -i Apis_laboriosa.fasta -l metazoa_odb9 -c 5 -o laboriosa_BUSCO -m genome
+	python run_BUSCO.py -i Apis_dorsata.fasta -l metazoa_odb9 -c 5 -o dorsata_BUSCO -m genome
+	
 ## Repeats estimation
 We used RepeatMasker with the search engines of RMBlast, library of Repbase and other default parameters to screen Apis laboriosa and Apis dorsata genomes for interspersed repeats and low complexity DNA sequences. 
 
@@ -7,8 +36,17 @@ We used RepeatMasker with the search engines of RMBlast, library of Repbase and 
 	RepeatMasker -parallel 20 -species honeybee -gff -dir dorsata_repeatmasker Apis_dorsata.fasta
 	
 ## Gene prediction
+	# Run Augustus to perform ab initio gene prediction 
+	augustus --species=Apis mellifera --genemodel=partial --strand=both --singlestrand=false --codingseq=on --outfile=laboriosa_augustus --gff3=on --alternatives-from-evidence=true --UTR=on
+	# Run Exonerate to perform homology-based gene prediction 
+	exonerate --model protein2genome --showtargetgff --bestn 1 --percent 50 1
+	
+## GO term anaotation
+	interproscan.sh -i Apis_laboriosa.fasta -appl Pfam -f GFF3 -goterms -cpu 50 -iprlookup –pa
 
 ## Gene family construction
+	# Run OrthoMCL to construct gene families
+	
 	# Count the number of all types of gene families
 	python count_all_gene_families --gene_family_directory /home/lin/gene_families/ --file_suffix fasta --gene_family_number 10460
 
