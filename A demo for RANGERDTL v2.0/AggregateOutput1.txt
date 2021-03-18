@@ -1,0 +1,29 @@
+Processed 100 files
+
+
+Aggregate reconciliation:
+Terrestris_XP_0121766351: Leaf Node
+Impatiens_XP_0122440771: Leaf Node
+m3 = LCA[Terrestris_XP_0121766351, Impatiens_XP_0122440771]: [Speciations = 100, Duplications = 0, Transfers = 0], [Most Frequent mapping --> n8, 100 times].
+Florea_XP_0123504351: Leaf Node
+Dorsata_XP_0066085141: Leaf Node
+Laboriosa_1401: Leaf Node
+Laboriosa_5099: Leaf Node
+m11 = LCA[Laboriosa_1401, Laboriosa_5099]: [Speciations = 0, Duplications = 100, Transfers = 0], [Most Frequent mapping --> Laboriosa, 100 times].
+m9 = LCA[Dorsata_XP_0066085141, Laboriosa_5099]: [Speciations = 100, Duplications = 0, Transfers = 0], [Most Frequent mapping --> n6, 100 times].
+Cerana_XP_0169128371: Leaf Node
+Mellifera_XP_0065680161: Leaf Node
+m14 = LCA[Cerana_XP_0169128371, Mellifera_XP_0065680161]: [Speciations = 100, Duplications = 0, Transfers = 0], [Most Frequent mapping --> n7, 100 times].
+m8 = LCA[Dorsata_XP_0066085141, Mellifera_XP_0065680161]: [Speciations = 100, Duplications = 0, Transfers = 0], [Most Frequent mapping --> n5, 100 times].
+m6 = LCA[Florea_XP_0123504351, Mellifera_XP_0065680161]: [Speciations = 100, Duplications = 0, Transfers = 0], [Most Frequent mapping --> n4, 100 times].
+m2 = LCA[Terrestris_XP_0121766351, Mellifera_XP_0065680161]: [Speciations = 100, Duplications = 0, Transfers = 0], [Most Frequent mapping --> n3, 100 times].
+Temnothorax_TGZ376061: Leaf Node
+Dinoponera_XP_0144830071: Leaf Node
+m17 = LCA[Temnothorax_TGZ376061, Dinoponera_XP_0144830071]: [Speciations = 100, Duplications = 0, Transfers = 0], [Most Frequent mapping --> n2, 100 times].
+m1 = LCA[Terrestris_XP_0121766351, Dinoponera_XP_0144830071]: [Speciations = 100, Duplications = 0, Transfers = 0], [Most Frequent mapping --> n1, 100 times].
+
+
+Percentage of events with 100% consistency = 100
+Percentage of mappings with 100% consistency = 100
+Total number of non-leaf nodes in gene tree: 9
+Total number of optimal solutions: 1

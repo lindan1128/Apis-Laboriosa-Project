@@ -1,0 +1,33 @@
+
+
+ ------------ Reconciliation for Gene Tree 1 (rooted) -------------
+Species Tree: 
+((Temnothorax,Dinoponera)n2,((Florea,((Heida,Dorsata)n6,(Cerana,Mellifera)n7)n5)n4,(Terrestris,Impatiens)n8)n3)n1;
+
+Gene Tree: 
+(((Terrestris_XP_0121766351,Impatiens_XP_0122440771)m3,(Florea_XP_0123504351,((Dorsata_XP_0066085141,(Heida_1401,Heida_5099)m11)m9,(Cerana_XP_0169128371,Mellifera_XP_0065680161)m14)m8)m6)m2,(Temnothorax_TGZ376061,Dinoponera_XP_0144830071)m17)m1;
+
+Reconciliation:
+Terrestris_XP_0121766351: Leaf Node
+Impatiens_XP_0122440771: Leaf Node
+m3 = LCA[Terrestris_XP_0121766351, Impatiens_XP_0122440771]: Speciation, Mapping --> n8
+Florea_XP_0123504351: Leaf Node
+Dorsata_XP_0066085141: Leaf Node
+Heida_1401: Leaf Node
+Heida_5099: Leaf Node
+m11 = LCA[Heida_1401, Heida_5099]: Duplication, Mapping --> Heida
+m9 = LCA[Dorsata_XP_0066085141, Heida_5099]: Speciation, Mapping --> n6
+Cerana_XP_0169128371: Leaf Node
+Mellifera_XP_0065680161: Leaf Node
+m14 = LCA[Cerana_XP_0169128371, Mellifera_XP_0065680161]: Speciation, Mapping --> n7
+m8 = LCA[Dorsata_XP_0066085141, Mellifera_XP_0065680161]: Speciation, Mapping --> n5
+m6 = LCA[Florea_XP_0123504351, Mellifera_XP_0065680161]: Speciation, Mapping --> n4
+m2 = LCA[Terrestris_XP_0121766351, Mellifera_XP_0065680161]: Speciation, Mapping --> n3
+Temnothorax_TGZ376061: Leaf Node
+Dinoponera_XP_0144830071: Leaf Node
+m17 = LCA[Temnothorax_TGZ376061, Dinoponera_XP_0144830071]: Speciation, Mapping --> n2
+m1 = LCA[Terrestris_XP_0121766351, Dinoponera_XP_0144830071]: Speciation, Mapping --> n1
+
+The minimum reconciliation cost is: 2 (Duplications: 1, Transfers: 0, Losses: 0)
+Total number of optimal solutions: 1
+Total number of candidates for gene birth: 1
