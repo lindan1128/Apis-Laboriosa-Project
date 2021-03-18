@@ -311,3 +311,10 @@ We used default cost for duplication and loss, and set the HGT cost as 1,000 to 
 "Treerecs is a very easy-use phylogenetic software based on duplication-loss reconciliation."                  —— Comte N
 
 	ls *.gene_family_for_dl.newick | awk -F '.' '{print "treerecs -g "$0" -s speices_tree_rooted.nwk -O newick:svg -O recphyloxml -t 98 -o "$1".treerecs_out -f"}' | sh
+	
+	
+References:
+1) Yang Z. PAML 4: phylogenetic analysis by maximum likelihood[J]. Molecular biology and evolution, 2007, 24(8): 1586-1591.
+2) Murrell B, Weaver S, Smith M D, et al. Gene-wide identification of episodic selection[J]. Molecular biology and evolution, 2015, 32(5): 1365-1371.
+3) Bansal M S, Alm E J, Kellis M. Efficient algorithms for the reconciliation problem with gene duplication, horizontal transfer and loss[J]. Bioinformatics, 2012, 28(12): i283-i291.
+4) Comte N, Morel B, Hasić D, et al. Treerecs: an integrated phylogenetic tool, from sequences to reconciliations[J]. Bioinformatics, 2020, 36(18): 4822-4824.
