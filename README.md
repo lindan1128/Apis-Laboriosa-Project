@@ -1,7 +1,7 @@
 ## Quality control 
 ## Genome assembly
 ## Repeats estimation
-We used RepeatMaker with the search engines of RMBlast, library of Repbase and other default parameters to screen Apis laboriosa and Apis dorsata genomes for interspersed repeats and low complexity DNA sequences. 
+We used RepeatMasker with the search engines of RMBlast, library of Repbase and other default parameters to screen Apis laboriosa and Apis dorsata genomes for interspersed repeats and low complexity DNA sequences. 
 
 	RepeatMasker -parallel 20 -species honeybee -gff -dir laboriosa_repeatmasker Apis_laboriosa.fasta
 	RepeatMasker -parallel 20 -species honeybee -gff -dir dorsata_repeatmasker Apis_dorsata.fasta
