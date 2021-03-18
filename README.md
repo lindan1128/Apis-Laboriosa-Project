@@ -95,7 +95,9 @@ We set Apis laboriosa and Apis dorsata as the foreground branch, respectively. T
 	(Temnothorax, Dinoponera, ((Florea, ((Laboriosa, Dorsata #1), (Cerana, Mellifera))), (Terrestris, Impatiens)));
 	
 #### Step 2: Prepare the control(ctl) files
-To calculate the likelihood value, we need to compare an alternative model (model = 2 NSsites = 2), where the foreground branch could have a proportion of sites under positive selection, with the corresponding null model (fix_omega = 1 and omega = 1), in which the foreground branch may have different proportions of sites under neutral selection and purifying selection to the background branches (see the following table).
+To calculate the likelihood value, we need to compare an alternative model (model = 2 NSsites = 2), where the foreground branch could have a proportion of sites under positive selection, with the corresponding null model (fix_omega = 1 and omega = 1), in which the foreground branch may have different proportions of sites under neutral selection and purifying selection to the background branches (see the following table from PAML tutorial).
+
+   <img width="554" alt="屏幕快照 2021-03-17 下午2 47 31" src="https://user-images.githubusercontent.com/35171055/111585638-90739600-87fa-11eb-9b5d-f36b1ebf4bb2.png">
 
 The ctl file of the alternative mdoel was set as follows:
 
