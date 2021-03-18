@@ -13,7 +13,7 @@ We used RepeatMaker with the search engines of RMBlast, library of Repbase and o
 	python count_all_gene_families --gene_family_directory /home/lin/gene_families/ --file_suffix fasta --gene_family_number 10460
 
 ## Multiple alignment
-        # Run muscle
+    # Run muscle
 	ls *.pep.fasta|awk '{print "muscle -in "$0" -out "$1".pep.muscle"}' | sh
 	ls /home/lin/gene_families | grep "pep.fasta$" | awk -F'.' '{print "perl pepMfa_to_cdsMfa.pl "$1".pep.muscle "$1".fasta > "$1".gene_family.fasta"}' | sh
 	
