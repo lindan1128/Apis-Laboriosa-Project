@@ -110,6 +110,7 @@ The orthomcl.config file was set as follows:
 	evalueExponentCutoff=-5
 	oracleIndexTblSpc=NONE
 
+## Count gene families
 	# Count the number of all types of gene families
 	python count_all_gene_families --gene_family_directory /home/lin/gene_families/ --file_suffix fasta --gene_family_number 10460
 
