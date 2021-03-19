@@ -3,7 +3,6 @@
 	
 	# Run SOAPdenovo
 	./soapdenovo all -s config_file
-	
 The config_file was set as follows:
 	
 	# maximal read length 
@@ -26,8 +25,8 @@ The config_file was set as follows:
 ## Completeness estimation
 	
 	# Run BUSCO
-	python run_BUSCO.py -i Apis_laboriosa.fasta -l metazoa_odb9 -c 5 -o laboriosa_BUSCO -m genome
-	python run_BUSCO.py -i Apis_dorsata.fasta -l metazoa_odb9 -c 5 -o dorsata_BUSCO -m genome
+	python run_BUSCO.py -i Apis_laboriosa.fasta -l metazoa_odb9 -m genome -o laboriosa_BUSCO
+	python run_BUSCO.py -i Apis_dorsata.fasta -l metazoa_odb -m genome -o dorsata_BUSCO
 	
 ## Repeats estimation
 We used RepeatMasker with the search engines of RMBlast, library of Repbase and other default parameters to screen Apis laboriosa and Apis dorsata genomes for interspersed repeats and low complexity DNA sequences. 
@@ -37,16 +36,33 @@ We used RepeatMasker with the search engines of RMBlast, library of Repbase and 
 	
 ## Gene prediction
 	# Run Augustus to perform ab initio gene prediction 
-	augustus --species=Apis mellifera --genemodel=partial --strand=both --singlestrand=false --codingseq=on --outfile=laboriosa_augustus --gff3=on --alternatives-from-evidence=true --UTR=on
+	augustus --species=honeybee --genemodel=partial --strand=both --singlestrand=false --codingseq=on --outfile=laboriosa_augustus --gff3=on --alternatives-from-evidence=true --UTR=on
 	# Run Exonerate to perform homology-based gene prediction 
-	exonerate --model protein2genome --showtargetgff --bestn 1 --percent 50 1
+	# Combine results from Augustus and Exonerate
+	# Extract CDSs
+	# Translate CDSs into proteins
 	
-## GO term anaotation
+## GO term annotation
 	interproscan.sh -i Apis_laboriosa.fasta -appl Pfam -f GFF3 -goterms -cpu 50 -iprlookup –pa
 
 ## Gene family construction
 	# Run OrthoMCL to construct gene families
 	
+The config file was set as follows:
+	
+	dbVendor=mysql
+	dbConnectString=dbi:mysql:orthomcl:localhost:3307
+	dbLogin=orthomcl
+	dbPassword=5201314
+	similarSequencesTable=SimilarSequences_new
+	orthologTable=Ortholog_new 
+	inParalogTable=InParalog_new
+	coOrthologTable=CoOrtholog_new
+	interTaxonMatchView=InterTaxonMatch_new
+	percentMatchCutoff=50
+	evalueExponentCutoff=-5
+	oracleIndexTblSpc=NONE
+
 	# Count the number of all types of gene families
 	python count_all_gene_families --gene_family_directory /home/lin/gene_families/ --file_suffix fasta --gene_family_number 10460
 
