@@ -1,8 +1,12 @@
 ## Quality control 
+
+	# We ran the QC using this script: https://github.com/TingtZHENG/metagenomics/blob/master/scripts/fqc.pl
+	fqc.pl all -p -f 1.rd.fq -r 2.rd.fq -o clean.rd.fq
+
 ## Genome assembly
 	
-	# Run SOAPdenovo
-	./soapdenovo all -s config_file
+	# Run SOAPdenovo2
+	./SOAPdenovo2 all -s config_file
 The config_file was set as follows:
 	
 	# maximal read length 
@@ -11,7 +15,7 @@ The config_file was set as follows:
 	avg_ins=350
 	# if sequence needs to be reversed
 	reverse_seq=0
-	# in which part(s) the reads are used 
+	# in which part(s) the reads are used. It takes value 1(only contig assembly), 2 (only scaffold assembly), 3(both contig and scaffold assembly), or 4 (only gap closure).
 	asm_flags=3
 	# cutoff of pair number for a reliable connection (default 3) 
 	pair_num_cutoff=3
@@ -37,23 +41,66 @@ We used RepeatMasker with the search engines of RMBlast, library of Repbase and 
 ## Gene prediction
 	# Run Augustus to perform ab initio gene prediction 
 	augustus --species=honeybee --genemodel=partial --strand=both --singlestrand=false --codingseq=on --outfile=laboriosa_augustus --gff3=on --alternatives-from-evidence=true --UTR=on
-	# Run Exonerate to perform homology-based gene prediction 
-	# Combine results from Augustus and Exonerate
-	# Extract CDSs
-	# Translate CDSs into proteins
 	
+	# Run Exonerate to perform homology-based gene prediction 
+	exonerate --model protein2genome --showtargetgff --showquerygff --percent 40 --bestn 1 homo_protein Apis_laboriosa.fasta >  Apis_laboriosa.fasta_homo_protein_out
+	
+	# Combine results from Augustus and Exonerate using EVidenceModeler v1.1.1 
+	## Partition the inputs
+	perl partition_EVM_inputs.pl --genome Apis_laboriosa.fasta --gene_predictions gene_predictions.gff3 --protein_alignments protein_alignments.gff3 --segmentSize 100000 --overlapSize 10000 --partition_listing partitions_list.out
+	## Generate the EVM command set
+	perl write_EVM_commands.pl --genome Apis_laboriosa.fasta --weights weight.txt --gene_predictions gene_predictions.gff3 --protein_alignments protein_alignments.gff3 --output_file_name evm.out  --partitions partitions_list.out >  commands.list
+	## Run the commands
+	perl execute_EVM_commands.pl commands.list | tee run.log
+	## Combine the partitions
+	perl recombine_EVM_partial_outputs.pl  --partitions partitions_list.out --output_file_name evm.out
+	## Convert to gff3 format
+	perl convert_EVM_outputs_to_GFF3.pl --partitions partitions_list.out --output evm.out --genome Apis_laboriosa.fasta
+	## Combine these gff3 files into a single output
+	find . -regex ".*evm.out.gff3" -exec cat {} \; > Apis_laboriosa.gff3
+	
+	# Extract CDSs
+	gffread Apis_laboriosa.gff3 -g Apis_laboriosa.fasta -x Apis_laboriosa_cds.fasta
+	
+	# Translate CDSs into proteins
+	transeq Apis_laboriosa_cds.fasta Apis_laboriosa_pro.fasta
+The weight.txt for EVidenceModeler was set as follows:
+	
+	ABINITIO_PREDICTION     Augustus        8
+	PROTEIN exonerate       10
+ 
 ## GO term annotation
-	interproscan.sh -i Apis_laboriosa.fasta -appl Pfam -f GFF3 -goterms -cpu 50 -iprlookup –pa
+	interproscan.sh -i Apis_laboriosa_pro.fasta -appl Pfam -f GFF3 -goterms -cpu 50 -iprlookup –pa
 
 ## Gene family construction
 	# Run OrthoMCL to construct gene families
+	## Install the required schema
+	orthomclInstallSchema orthomcl.config install_tables.log
+	## Generate protein fasta files in the required format
+	orthomclAdjustFasta Apis_laboriosa Apis_laboriosa_pro.fasta 1
+	## Filter away poor quality proteins
+	orthomclFilterFasta pro.out 10 20 
+	## Run Blastp for the good protein fasta file
+	makeblastdb -in goodProteins.fasta -dbtype prot -out orthomcl
+	blastp -query goodProteins.fa -out blastp.out -db orthomcl -evalue 1e-5 -num_threads 50
+	## Create a file of similarities in the required format
+	orthomclBlastParser blastp.out pro.out >> similarSequences.txt
+	## Load the output of orthomclBlastParser
+	orthomclLoadBlast orthomcl.config ilarSequences.txt
+	## Compute pairwise relationships
+	orthomclPairs orthomcl.config orthomcl_pairs.log cleanup=no
+	## Dump the pairs/ directory from the database
+	orthomclDumpPairsFiles orthomcl.config
+	## Convert mcl output to groups.txt
+	mcl mclInput --abc -I 1.5 -o mclOutput
+	orthomclMclToGroups led 1 < mclOutput > groups.txt
 	
-The config file was set as follows:
+The orthomcl.config file was set as follows:
 	
 	dbVendor=mysql
 	dbConnectString=dbi:mysql:orthomcl:localhost:3307
 	dbLogin=orthomcl
-	dbPassword=5201314
+	dbPassword=***
 	similarSequencesTable=SimilarSequences_new
 	orthologTable=Ortholog_new 
 	inParalogTable=InParalog_new
@@ -75,13 +122,16 @@ The config file was set as follows:
 ### Genetic distance estimation
 	# Change fasta format into phy format for all single-copy gene files
 	ls *.conserved_gene_family_for_genetic_distance.fasta | awk '{print "perl fasta2philip.pl "$0" > "$0".phy "}' | sh
+	
 	# Calculate genetic distance
 	calculate_genetic_distance.r --gene_family_directory /home/lin/gene_families/ 
 ### Species tree construction
 	# Concatenate all single-copy gene families into a fasta file
 	cat *.conserved_gene_family.fasta >> all_conserved_gene_family.fasta
+	
 	# Change fasta format into phy format
 	perl fasta2philip.pl all_conserved_gene_family.fasta > 	all_conserved_gene_family.phy
+	
 	# Run phyml
 	phyml -i all_conserved_gene_family.phy -b 1000 -d nt -m GTR -c 4 -a e -o tlr
 ###  Divergence time estimation
@@ -123,6 +173,7 @@ Then, we ran mcmctree to estimate the divergence time.
 	# Run mcmctree [usedata = 3] to perform ML estimation of the branch lengths, g and H without the clock
 	mcmctree
 	cp out.BV in.BV
+	
 	# Run mcmctree [usedata = 2] to perform Bayesian estimation of divergence times using the approximate likelihood method
 	mcmctree
 
@@ -337,6 +388,7 @@ In addition to this output, BUSTED also calculates "Evidence Ratios" (ERs) for e
 	
 	# Change fasta format into phy format
 	ls *.gene_family_for_dl.fasta | awk '{print "perl fasta2philip.pl "$0" >  "$1".gene_family_for_dl.phy"}' | sh
+	
 	# Run phyml
 	ls *.gene_family_for_dl.phy | awk '{print " phyml -i "$0" -b 100 -d nt -m GTR -c 4 -a e"}' | sh
 
