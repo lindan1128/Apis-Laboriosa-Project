@@ -198,7 +198,7 @@ The mcmctree.ctl was set as follows:
     alpha_gamma = 1 1      * gamma prior for alpha
     rgene_gamma = 1 2.04     * gamma prior for rate for genes
     sigma2_gamma = 1 10    * gamma prior for sigma^2     (for clock=2 or 3)
-        finetune = 1: 1 0.1 0.1 0.01 0.5  * times, rates, mixing, paras, RateParas
+        finetune = 1: 0.1 0.1 0.1 0.01 0.5  * times, rates, mixing, paras, RateParas
            print = 2
           burnin = 10000
         sampfreq = 10
@@ -257,7 +257,7 @@ We used the free-ratios model (model = 1) to compute an independent ω ratio for
 "The branch-site models allow ω to vary both among sites in the protein and across branches on the tree and aim to detect positive selection affecting a few sites along particular lineages."                                       —— Ziheng Yang
 
 #### Step 1: Define phylogenetic tree
-We need to define the lineages of interest (called foreground branches) in the phylogentic tree. Different ω can apply to the foreground branches, while  the background branches share the same distribution of ω value among sites.
+We need to define the lineages of interest (called foreground branches) in the phylogentic tree. Different ω can apply to the foreground branches, while the background branches share the same distribution of ω value among sites.
 
 We set Apis laboriosa and Apis dorsata as the foreground branch, respectively. The trees are shown as follows:
 
