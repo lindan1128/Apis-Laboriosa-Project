@@ -55,32 +55,32 @@ def count_gene_families(seq_list, i, f_single_copy_9_species, f_present_9_specie
     if all([len(Temnothorax) == 1, len(Dinoponera) == 1, len(Mellifera) == 1, len(Cerana) == 1, len(Florea) == 1, len(Dorsata) == 1, len(Terrestris) == 1, len(Impatiens) == 1, len(Laboriosa) == 1]):
         f_single_copy_9_species.write(str(i) + '\n')
 
-    if all([len(Temnothorax) > 0, len(Dinoponera) > 0, len(Mellifera) > 0, len(Cerana) > 0, len(Florea) > 0, len(Dorsata) > 0, len(Terrestris) > 0, len(Impatiens) > 0, len(Laboriosa) > 0]):
+    if all([len(Temnothorax) > 1, len(Dinoponera) > 1, len(Mellifera) > 1, len(Cerana) > 1, len(Florea) > 1, len(Dorsata) > 1, len(Terrestris) > 1, len(Impatiens) > 1, len(Laboriosa) > 1]):
         f_present_9_species.write(str(i) + '\t' + str(len(Laboriosa)) + '\t' + str(len(Dorsata)) + '\n')
 
     if all([len(Temnothorax) == 0, len(Dinoponera) == 0, len(Mellifera) == 1, len(Cerana) == 1, len(Florea) == 1, len(Dorsata) == 1, len(Terrestris) == 1, len(Impatiens) == 1, len(Laboriosa) == 1]):
         f_single_copy_7_species.write(str(i))
         f_single_copy_7_species.write('\n')
 
-    if all([len(Temnothorax) == 0, len(Dinoponera) == 0, len(Mellifera) > 0, len(Cerana) > 0, len(Florea) > 0, len(Dorsata) > 0, len(Terrestris) > 0, len(Impatiens) > 0, len(Laboriosa) > 0]):
+    if all([len(Temnothorax) == 0, len(Dinoponera) == 0, len(Mellifera) > 1, len(Cerana) > 1, len(Florea) > 1, len(Dorsata) > 1, len(Terrestris) > 1, len(Impatiens) > 1, len(Laboriosa) > 1]):
         f_present_7_species.write(str(i) + '\t' + str(len(Laboriosa)) + '\t' + str(len(Dorsata)) + '\n')
 
     if all([len(Temnothorax) == 0, len(Dinoponera) == 0, len(Mellifera) == 1, len(Cerana) == 1, len(Florea) == 1, len(Dorsata) == 1, len(Terrestris) == 0, len(Impatiens) == 0, len(Laboriosa) == 1]):
         f_single_copy_5_species.write(str(i) + '\n')
 
-    if all([len(Temnothorax) == 0, len(Dinoponera) == 0, len(Mellifera) > 0, len(Cerana) > 0, len(Florea) > 0, len(Dorsata) > 0, len(Terrestris) == 0, len(Impatiens) == 0, len(Laboriosa) > 0]):
+    if all([len(Temnothorax) == 0, len(Dinoponera) == 0, len(Mellifera) > 1, len(Cerana) > 1, len(Florea) > 1, len(Dorsata) > 1, len(Terrestris) == 0, len(Impatiens) == 0, len(Laboriosa) > 1]):
         f_present_5_species.write(str(i) + '\t' + str(len(Laboriosa)) + '\t' + str(len(Dorsata)) + '\n')
 
     if all([len(Temnothorax) == 0, len(Dinoponera) == 0, len(Mellifera) == 0, len(Cerana) == 0, len(Florea) == 0, len(Dorsata) == 1, len(Terrestris) == 0, len(Impatiens) == 0, len(Laboriosa) == 1]):
         f_single_copy_2_species.write(str(i) + '\n')
 
-    if all([len(Temnothorax) == 0, len(Dinoponera) == 0, len(Mellifera) == 0, len(Cerana) == 0, len(Florea) == 0, len(Dorsata) > 0, len(Terrestris) == 0, len(Impatiens) == 0, len(Laboriosa) > 0]):
+    if all([len(Temnothorax) == 0, len(Dinoponera) == 0, len(Mellifera) == 0, len(Cerana) == 0, len(Florea) == 0, len(Dorsata) > 1, len(Terrestris) == 0, len(Impatiens) == 0, len(Laboriosa) > 1]):
         f_present_2_species.write(str(i) + '\t' + str(len(Laboriosa)) + '\t' + str(len(Dorsata)) + '\n')
 
-    if all([len(Laboriosa) > 0, len(Dorsata) == 0]):
+    if all([len(Temnothorax) + len(Dinoponera) + len(Mellifera) + len(Cerana) + len(Florea) + len(Terrestris) + len(Impatiens) > 0, len(Laboriosa) > 0, len(Dorsata) == 0]):
         f_unshared_gene_families.write(str(i) + '\t' + str(len(Laboriosa)) + '\n')
 
-    if all([len(Dorsata) > 0, len(Laboriosa) == 0]):
+    if all([len(Temnothorax) + len(Dinoponera) + len(Mellifera) + len(Cerana) + len(Florea) + len(Terrestris) + len(Impatiens) > 0, len(Dorsata) > 0, len(Laboriosa) == 0]):
         f_unshared_gene_families.write(str(i) + '\t' + str(len(Dorsata)) + '\n')
 
     if all([len(Temnothorax) == 0, len(Dinoponera) == 0, len(Mellifera) == 0, len(Cerana) == 0, len(Florea) == 0, len(Dorsata) == 0, len(Terrestris) == 0, len(Impatiens) == 0, len(Laboriosa) > 0]):
