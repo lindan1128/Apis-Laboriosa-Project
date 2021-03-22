@@ -30,7 +30,7 @@ The config_file was set as follows:
 	
 	# Run BUSCO
 	python run_BUSCO.py -i Apis_laboriosa.fasta -l metazoa_odb9 -m genome -o laboriosa_BUSCO
-	python run_BUSCO.py -i Apis_dorsata.fasta -l metazoa_odb -m genome -o dorsata_BUSCO
+	python run_BUSCO.py -i Apis_dorsata.fasta -l metazoa_odb9 -m genome -o dorsata_BUSCO
 	
 ## Repeats estimation
 We used RepeatMasker with the search engines of RMBlast, library of Repbase and other default parameters to screen Apis laboriosa and Apis dorsata genomes for interspersed repeats and low complexity DNA sequences. 
