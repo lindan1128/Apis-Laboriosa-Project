@@ -205,6 +205,51 @@ The mcmctree.ctl was set as follows:
          nsample = 20000
 
 ## Positive selection analysis
+### SNP calling
+	# for Apis laboriosa
+	# Use samtools to map all the pair-end reads
+	bwa index Apis_laboriosa.fasta
+	samtools faidx Apis_laboriosa.fasta
+	bwa mem -R '@RG\tID:IDa\tPU:81MMNABXX\tSM:exomeSM\tPL:Illumina' -T 30 Apis_laboriosa.fasta DEL01745_L6_1_clean.fq DEL01745_L6_2_clean.fq > heida.1.sam
+	bwa mem -R '@RG\tID:IDa\tPU:81MMNABXX\tSM:exomeSM\tPL:Illumina' -T 30 Apis_laboriosa.fasta DEL01746_L6_1_clean.fq DEL01746_L6_2_clean.fq > heida.2.sam
+	bwa mem -R '@RG\tID:IDa\tPU:81MMNABXX\tSM:exomeSM\tPL:Illumina' -T 30 Apis_laboriosa.fasta DSW63853_L8_1_clean.fq DSW63853_L8_2_clean.fq > heida.3.sam
+	bwa mem -R '@RG\tID:IDa\tPU:81MMNABXX\tSM:exomeSM\tPL:Illumina' -T 30 Apis_laboriosa.fastaa DSW63855_L1_1_clean.fq DSW63855_L1_2_clean.fq > heida.4.sam
+	samtools view -b -S heida.1.sam > heida.1.bam
+	samtools view -b -S heida.2.sam > heida.2.bam
+	samtools view -b -S heida.3.sam > heida.3.bam
+	samtools view -b -S heida.4.sam > heida.4.bam
+	samtools sort heida.1.bam heida.1.sort
+	samtools sort heida.2.bam heida.2.sort
+	samtools sort heida.3.bam heida.3.sort
+	samtools sort heida.4.bam heida.4.sort
+	samtools merge heida.sort.bam heida.1.sort.bam heida.2.sort.bam heida.3.sort.bam heida.4.sort.bam
+	samtools index heida.sort.bam 
+	# Use freebayes to call the snp
+	freebayes -f Apis_laboriosa.fasta -p 8 --use-best-n-alleles 4 heida.sort.bam --pooled-discrete > heida.sort.bam.p8.discrete.vcf
+	less heida.sort.bam.p8.discrete.vcf| vcffilter -f "QUAL > 30" -f "TYPE = snp" >heida.sort.bam.p8.discrete.vcf.filter.vcf
+	
+	# for Apis dordata
+	# Use samtools to map all the pair-end reads
+	bwa index Apis_dorsata.fasta
+	samtools faidx Apis_dorsata.fasta
+	bwa mem -R '@RG\tID:IDa\tPU:81MMNABXX\tSM:exomeSM\tPL:Illumina' -T 30 Apis_dorsata.fasta /ssd1/lin/apis/data/reads/SRR1564144_1.fastq /ssd1/lin/apis/data/reads/SRR1564144_2.fastq > Apis_dorsata.1.sam
+	bwa mem -R '@RG\tID:IDa\tPU:81MMNABXX\tSM:exomeSM\tPL:Illumina' -T 30 Apis_dorsata.fasta /ssd1/lin/apis/data/reads/SRR1575110_1.fastq /ssd1/lin/apis/data/reads/SRR1575110_2.fastq > Apis_dorsata.2.sam
+	bwa mem -R '@RG\tID:IDa\tPU:81MMNABXX\tSM:exomeSM\tPL:Illumina' -T 30 Apis_dorsata.fasta /ssd1/lin/apis/data/reads/SRR1575111_1.fastq /ssd1/lin/apis/data/reads/SRR1575111_2.fastq > Apis_dorsata.3.sam
+	bwa mem -R '@RG\tID:IDa\tPU:81MMNABXX\tSM:exomeSM\tPL:Illumina' -T 30 Apis_dorsata.fasta /ssd1/lin/apis/data/reads/SRR1575122_1.fastq /ssd1/lin/apis/data/reads/SRR1575122_2.fastq > Apis_dorsata.4.sam
+	samtools view -b -S Apis_dorsata.1.sam > Apis_dorsata.1.bam
+	samtools view -b -S Apis_dorsata.2.sam > Apis_dorsata.2.bam
+	samtools view -b -S Apis_dorsata.3.sam > Apis_dorsata.3.bam
+	samtools view -b -S Apis_dorsata.4.sam > Apis_dorsata.4.bam
+	samtools sort Apis_dorsata.1.bam Apis_dorsata.1.sort
+	samtools sort Apis_dorsata.2.bam Apis_dorsata.2.sort
+	samtools sort Apis_dorsata.3.bam Apis_dorsata.3.sort
+	samtools sort Apis_dorsata.4.bam Apis_dorsata.4.sort
+	samtools merge Apis_dorsata.sort.bam Apis_dorsata.1.sort.bam Apis_dorsata.2.sort.bam Apis_dorsata.3.sort.bam Apis_dorsata.4.sort.bam
+	samtools index Apis_dorsata.sort.bam 
+	# Use freebayes to call the snp
+	freebayes -f Apis_dorsata.fasta -p 19 --pooled-discrete --use-best-n-alleles 4 Apis_dorsata.sort.bam > Apis_dorsata.sort.bam.p19.discrete.vcf
+	less Apis_dorsata.sort.bam.p19.discrete.vcf| vcffilter -f "QUAL > 30" -f "TYPE = snp" > Apis_dorsata.sort.bam.p19.discrete.vcf.filter.vcf
+	
 ### PAML free-ratio model
 
 "The branch models allow the ω (dN/dS, the synonymous rate / the non-synonymous rate) to vary among branches in the phylogeny and are useful for detecting positive selection acting on particular lineages."              —— Ziheng Yang
@@ -382,6 +427,11 @@ BUSTED outputs the likelihood under the unconstrained alternative model (allows 
 In addition to this output, BUSTED also calculates "Evidence Ratios" (ERs) for each site. The ER reports the likelihood ratio (in a log-scale format) that the unconstrained alternative model is a better fit to the data compared to the constrained null model. Unlike the BEB posterior probabilities provided by PAML, the ER for each site just provides descriptive information about whether a given site could have evolved under positive selection. 
 
 ## Gene duplication/loss analysis
+### Calculate coverage of properly pairs
+	# an example
+	samtools view -q 30 -b -h heida.1.sort.bam scaffold18_cov149:1478038-1480188	 > out1.aligned.bam
+	sed -i "/=.*\t-/d" out1.aligned.bam
+	samtools flagstat out1.aligned.bam
 ### RANGERDTL v2.0
 "RANGER-DTL (short for Rapid ANalysis of Gene family Evolution using Reconciliation-DTL) is a software package for inferring gene family evolution by speciation, gene duplication, horizontal gene transfer, and gene loss. The software takes as input a gene tree (rooted or unrooted) and a rooted species tree and reconciles the two by postulating speciation, duplication, transfer,and loss events."                                                                                  —— Bansal M S
 
