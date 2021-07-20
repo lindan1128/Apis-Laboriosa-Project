@@ -429,7 +429,9 @@ In addition to this output, BUSTED also calculates "Evidence Ratios" (ERs) for e
 ## Gene duplication/loss analysis
 ### Calculate coverage of properly pairs
 	# an example
-	samtools view -q 30 -b -h heida.1.sort.bam scaffold18_cov149:1478038-1480188	 > out1.aligned.bam
+	sambamba view -t 40 -h -f bam -F "mapping_quality >= 1 and not (unmapped or secondary_alignment) and not ([XA] != null or [SA] != null)" heida.4.sort.bam -o heida.4.unique.sort.bam
+	samtools index heida.4.unique.sort.bam
+	samtools view -q 30 -b -h heida.4.unique.sort.bam scaffold18_cov149:1478038-1480188	 > out1.aligned.bam
 	sed -i "/=.*\t-/d" out1.aligned.bam
 	samtools flagstat out1.aligned.bam
 ### RANGERDTL v2.0
