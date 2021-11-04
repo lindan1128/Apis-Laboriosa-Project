@@ -1,3 +1,7 @@
+# This repository provides codes for 'Comparative Genomics Reveals Recent Adaptive Evolution in Himalayan Giant Honeybee Apis laboriosa' 
+
+
+
 ## Quality control 
 
 	# We ran the QC using this script: https://github.com/TingtZHENG/metagenomics/blob/master/scripts/fqc.pl
