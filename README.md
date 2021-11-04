@@ -1,4 +1,4 @@
-# This repository provides codes for 'Comparative Genomics Reveals Recent Adaptive Evolution in Himalayan Giant Honeybee Apis laboriosa' 
+## This repository provides codes for 'Comparative Genomics Reveals Recent Adaptive Evolution in Himalayan Giant Honeybee Apis laboriosa' 
 
 
 
