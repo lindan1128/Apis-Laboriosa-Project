@@ -1,6 +1,9 @@
-## This repository provides codes for 'Comparative Genomics Reveals Recent Adaptive Evolution in Himalayan Giant Honeybee Apis laboriosa' 
 
-
+## Citation
+If you find this project useful in your research, please consider cite:
+		
+	Lin D, Lan L, Zheng T, et al. Comparative genomics reveals recent adaptive evolution in Himalayan giant honeybee Apis laboriosa[J]. Genome biology and evolution, 2021, 13(10): evab227.
+	
 
 ## Quality control 
 
