@@ -1,4 +1,6 @@
 
+![Image text](https://github.com/lindan1128/Apis-Laboriosa-Project/blob/main/Workflow.png)
+
 ## Citation
 If you find this project useful in your research, please consider cite:
 		
